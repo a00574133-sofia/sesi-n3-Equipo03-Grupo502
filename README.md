@@ -6,12 +6,13 @@
 - Camila Mata Hernández A00575381 - @a00575381-Camila
 - Emilio Fernando Espinoza Balderas A00575425 - @a00575425-emilio-espinoza
 - Luis Gabriel Gomez Garcia A00575392- @a00575392-luisga!
+- Luis Santiago Arredondo Diaz A00575680- @a00575680- Luisillo
 
 ## Descripción del problema
 En León, Guanajuato, las tenerías y maquilas de la industria de la piel y el calzado generan residuos y subproductos que, en muchos casos, terminan en drenajes, arroyos o tiraderos clandestinos, provocando contaminación del agua y del medio ambiente. Esta problemática refleja la falta de un manejo responsable de los residuos y de alternativas para su reutilización. Se propone automatizar y mejorar su aprovechamiento mediante un marketplace digital que conecte a las empresas que generan sobrantes con aquellas que pueden reutilizarlos, facilitando su comercialización, geolocalización y trazabilidad para impulsar la economía circular.
 
 ## Objetivo del sistema
-(Qué debe lograr el sistema y bajo qué condiciones)
+El sistema debe conectar a tenerías y maquilas de León para facilitar la publicación, búsqueda y comercialización de residuos y subproductos de piel que puedan reutilizarse como materia prima en otras industrias. Debe permitir geolocalizar materiales disponibles, consultar sus características (tipo, grosor y acabado), realizar compras o subastas al mayoreo y dar seguimiento a su aprovechamiento mediante registros de trazabilidad. Debe ser fácil de usar, seguro, accesible y mantener información actualizada, promoviendo que los residuos se reutilicen en lugar de terminar en drenajes, arroyos o tiraderos clandestinos.
 
 ## Componentes del sistema
 ### Controlador
