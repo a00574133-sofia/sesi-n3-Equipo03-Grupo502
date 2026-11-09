@@ -8,7 +8,7 @@
 - Luis Gabriel Gomez Garcia A00575392- @a00575392-luisga!
 
 ## Descripción del problema
-(Explica en 4-6 líneas la situación problema y qué se automatiza/mejora)
+En León, Guanajuato, las tenerías y maquilas de la industria de la piel y el calzado generan residuos y subproductos que, en muchos casos, terminan en drenajes, arroyos o tiraderos clandestinos, provocando contaminación del agua y del medio ambiente. Esta problemática refleja la falta de un manejo responsable de los residuos y de alternativas para su reutilización. Se propone automatizar y mejorar su aprovechamiento mediante un marketplace digital que conecte a las empresas que generan sobrantes con aquellas que pueden reutilizarlos, facilitando su comercialización, geolocalización y trazabilidad para impulsar la economía circular.
 
 ## Objetivo del sistema
 (Qué debe lograr el sistema y bajo qué condiciones)
