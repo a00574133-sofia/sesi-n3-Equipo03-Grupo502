@@ -5,7 +5,7 @@
 - Sofia Sopeña Zamora A00574133 - @a00574133-sofia
 - Camila Mata Hernández A00575381 - @a00575381-Camila
 - Emilio Fernando Espinoza Balderas A00575425 - @a00575425-emilio-espinoza
-- Luis Gabriel Gomez Garcia A00575392- @a00575392-luis-ga
+- Luis Gabriel Gomez Garcia A00575392- @a00575392-luisga!
 
 ## Descripción del problema
 (Explica en 4-6 líneas la situación problema y qué se automatiza/mejora)
