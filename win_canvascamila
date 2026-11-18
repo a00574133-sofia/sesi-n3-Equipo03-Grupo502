@@ -122,3 +122,5 @@ if __name__ == "__main__":
         command=lambda: open_win_canvas(root),
     ).pack(pady=20)
     root.mainloop()
+
+-la dejé minimalista: quité los bordes de arriba y de la derecha, usé una línea gris delgada y solo resalté en rojo el último dato y la hora más caliente.
