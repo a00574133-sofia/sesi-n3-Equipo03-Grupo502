@@ -98,3 +98,6 @@ def open_win_canvas(parent: tk.Tk):
             mostrar_graficas(frm, horas, temps)
 
     ttk.Button(frm, text="Analizar Temperaturas", command=cargar).pack(pady=5)
+
+
+- pinté todo según la temperatura, de azul cuando hace frío a rojo cuando hace calor, tanto en los puntos de la línea como en cada barra, y agregué una barra lateral que explica los colores.
