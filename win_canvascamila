@@ -1,0 +1,124 @@
+import tkinter as tk
+from tkinter import ttk, messagebox
+from datetime import datetime
+
+import requests
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+
+def fetch_data():
+    """
+    Obtiene de Open-Meteo las temperaturas horarias de León, Gto
+    de las últimas 24 horas. Devuelve (horas, temperaturas).
+    """
+    try:
+        url = (
+            "https://api.open-meteo.com/v1/forecast"
+            "?latitude=21.12&longitude=-101.68"
+            "&hourly=temperature_2m&past_days=1&forecast_days=1"
+            "&timezone=America%2FMexico_City"
+        )
+        response = requests.get(url, timeout=15)
+        response.raise_for_status()
+        data = response.json()
+
+        horas = data["hourly"]["time"]
+        temps = data["hourly"]["temperature_2m"]
+
+        ahora = datetime.now().strftime("%Y-%m-%dT%H:00")
+        pares = [(h, t) for h, t in zip(horas, temps) if h <= ahora and t is not None]
+        pares = pares[-24:]
+
+        horas_cortas = [
+            datetime.fromisoformat(h).strftime("%d/%m %H:%M") for h, _ in pares
+        ]
+        return horas_cortas, [t for _, t in pares]
+    except Exception as e:
+        messagebox.showerror("Error", f"No se pudieron obtener los datos:\n{e}")
+        return [], []
+
+
+# ---------- VERSIÓN 1: TEMA OSCURO ----------
+BG = "#1e1e2e"
+FG = "#cdd6f4"
+CIAN = "#89dceb"
+AMARILLO = "#f9e2af"
+
+
+def _estilo(fig, ax, horas, titulo):
+    ax.set_xticks(range(0, len(horas), 3))
+    ax.set_xticklabels(horas[::3])
+    fig.patch.set_facecolor(BG)
+    ax.set_facecolor(BG)
+    ax.set_title(titulo, color=FG, fontsize=11, fontweight="bold")
+    ax.set_xlabel("Hora", color=FG)
+    ax.set_ylabel("°C", color=FG)
+    ax.tick_params(colors=FG, labelsize=7)
+    ax.tick_params(axis="x", rotation=45)
+    for s in ax.spines.values():
+        s.set_color("#45475a")
+    ax.grid(color="#45475a", alpha=0.6, linestyle="--", linewidth=0.5)
+    ax.set_axisbelow(True)
+    fig.tight_layout()
+
+
+def create_line_chart(horas, temps):
+    """Línea cian con área sombreada sobre fondo oscuro."""
+    fig = Figure(figsize=(6, 3), dpi=100)
+    ax = fig.add_subplot(111)
+    x = list(range(len(horas)))
+    ax.plot(x, temps, color=CIAN, linewidth=2)
+    ax.fill_between(x, temps, min(temps) - 1, color=CIAN, alpha=0.2)
+    ax.set_ylim(min(temps) - 1, max(temps) + 1)
+    _estilo(fig, ax, horas, "Temperatura en León (línea)")
+    return fig
+
+
+def create_bar_chart(horas, temps):
+    """Barras amarillas sobre fondo oscuro."""
+    fig = Figure(figsize=(6, 3), dpi=100)
+    ax = fig.add_subplot(111)
+    ax.bar(range(len(horas)), temps, color=AMARILLO, width=0.7)
+    _estilo(fig, ax, horas, "Temperatura en León (barras)")
+    return fig
+
+
+def mostrar_graficas(frm, horas, temps):
+    """Inserta las dos gráficas (línea y barras) en el frame."""
+    for fig in (create_line_chart(horas, temps), create_bar_chart(horas, temps)):
+        canvas = FigureCanvasTkAgg(fig, master=frm)
+        canvas.draw()
+        canvas.get_tk_widget().pack(pady=10, fill="x")
+
+
+def open_win_canvas(parent: tk.Tk):
+    """Crea la ventana secundaria con gráficas de la API."""
+    win = tk.Toplevel(parent)
+    win.title("Canvas con API (Open-Meteo) y gráficas")
+    win.geometry("960x800")
+
+    top = ttk.Frame(win, padding=12)
+    top.pack(fill="x")
+
+    charts_frame = ttk.Frame(win, padding=12)
+    charts_frame.pack(fill="both", expand=True)
+
+    def cargar():
+        horas, temps = fetch_data()
+        if horas and temps:
+            for w in charts_frame.winfo_children():
+                w.destroy()
+            mostrar_graficas(charts_frame, horas, temps)
+
+    ttk.Button(top, text="Cargar y mostrar gráficas", command=cargar).pack()
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.title("Prueba win_canvas")
+    ttk.Button(
+        root, text="Abrir ventana Canvas",
+        command=lambda: open_win_canvas(root),
+    ).pack(pady=20)
+    root.mainloop()
