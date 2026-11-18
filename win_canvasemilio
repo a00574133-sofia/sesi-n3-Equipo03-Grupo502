@@ -1,0 +1,138 @@
+import tkinter as tk
+from tkinter import ttk, messagebox
+from datetime import datetime
+
+import requests
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+
+def fetch_data():
+    """
+    Obtiene de Open-Meteo las temperaturas horarias de León, Gto
+    de las últimas 24 horas. Devuelve (horas, temperaturas).
+    """
+    try:
+        url = (
+            "https://api.open-meteo.com/v1/forecast"
+            "?latitude=21.12&longitude=-101.68"
+            "&hourly=temperature_2m&past_days=1&forecast_days=1"
+            "&timezone=America%2FMexico_City"
+        )
+        response = requests.get(url, timeout=15)
+        response.raise_for_status()
+        data = response.json()
+
+        horas = data["hourly"]["time"]
+        temps = data["hourly"]["temperature_2m"]
+
+        ahora = datetime.now().strftime("%Y-%m-%dT%H:00")
+        pares = [(h, t) for h, t in zip(horas, temps) if h <= ahora and t is not None]
+        pares = pares[-24:]
+
+        horas_cortas = [
+            datetime.fromisoformat(h).strftime("%d/%m %H:%M") for h, _ in pares
+        ]
+        return horas_cortas, [t for _, t in pares]
+    except Exception as e:
+        messagebox.showerror("Error", f"No se pudieron obtener los datos:\n{e}")
+        return [], []
+
+
+# ---------- VERSIÓN 5: CON ANOTACIONES (MÁX, MÍN, PROMEDIO, VALORES) ----------
+AZUL = "#264653"
+VERDE = "#2a9d8f"
+AMARILLO = "#e9c46a"
+ROJO = "#c0392b"
+
+
+def _estilo(fig, ax, horas, titulo):
+    ax.set_xticks(range(0, len(horas), 3))
+    ax.set_xticklabels(horas[::3])
+    ax.set_title(titulo, fontsize=11, fontweight="bold")
+    ax.set_xlabel("Hora")
+    ax.set_ylabel("°C")
+    ax.tick_params(axis="x", rotation=45, labelsize=7)
+    ax.grid(alpha=0.3)
+    ax.set_axisbelow(True)
+    ax.margins(y=0.3)
+    fig.tight_layout()
+
+
+def create_line_chart(horas, temps):
+    """Línea con máximo, mínimo y promedio anotados."""
+    fig = Figure(figsize=(6, 3), dpi=100)
+    ax = fig.add_subplot(111)
+    x = list(range(len(horas)))
+    prom = sum(temps) / len(temps)
+    imax = temps.index(max(temps))
+    imin = temps.index(min(temps))
+
+    ax.plot(x, temps, color=AZUL, linewidth=2, marker="o", markersize=3)
+    ax.axhline(prom, color=AMARILLO, linestyle="--", linewidth=1.5,
+               label=f"Promedio: {prom:.1f} °C")
+    ax.annotate(
+        f"Máx {temps[imax]:.1f}°", xy=(imax, temps[imax]),
+        xytext=(0, 14), textcoords="offset points", ha="center",
+        color=ROJO, fontsize=8, fontweight="bold",
+        arrowprops=dict(arrowstyle="->", color=ROJO),
+    )
+    ax.annotate(
+        f"Mín {temps[imin]:.1f}°", xy=(imin, temps[imin]),
+        xytext=(0, -20), textcoords="offset points", ha="center",
+        color="#1f77b4", fontsize=8, fontweight="bold",
+        arrowprops=dict(arrowstyle="->", color="#1f77b4"),
+    )
+    ax.legend(fontsize=7, loc="best")
+    _estilo(fig, ax, horas, "Temperatura en León (línea)")
+    return fig
+
+
+def create_bar_chart(horas, temps):
+    """Barras con el valor escrito encima de cada una."""
+    fig = Figure(figsize=(6, 3), dpi=100)
+    ax = fig.add_subplot(111)
+    barras = ax.bar(range(len(horas)), temps, color=VERDE, width=0.75)
+    ax.bar_label(barras, labels=[f"{t:.0f}" for t in temps], fontsize=6, padding=2)
+    _estilo(fig, ax, horas, "Temperatura en León (barras)")
+    return fig
+
+
+def mostrar_graficas(frm, horas, temps):
+    """Inserta las dos gráficas (línea y barras) en el frame."""
+    for fig in (create_line_chart(horas, temps), create_bar_chart(horas, temps)):
+        canvas = FigureCanvasTkAgg(fig, master=frm)
+        canvas.draw()
+        canvas.get_tk_widget().pack(pady=10, fill="x")
+
+
+def open_win_canvas(parent: tk.Tk):
+    """Crea la ventana secundaria con gráficas de la API."""
+    win = tk.Toplevel(parent)
+    win.title("Canvas con API (Open-Meteo) y gráficas")
+    win.geometry("960x800")
+
+    top = ttk.Frame(win, padding=12)
+    top.pack(fill="x")
+
+    charts_frame = ttk.Frame(win, padding=12)
+    charts_frame.pack(fill="both", expand=True)
+
+    def cargar():
+        horas, temps = fetch_data()
+        if horas and temps:
+            for w in charts_frame.winfo_children():
+                w.destroy()
+            mostrar_graficas(charts_frame, horas, temps)
+
+    ttk.Button(top, text="Cargar y mostrar gráficas", command=cargar).pack()
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.title("Prueba win_canvas")
+    ttk.Button(
+        root, text="Abrir ventana Canvas",
+        command=lambda: open_win_canvas(root),
+    ).pack(pady=20)
+    root.mainloop()
