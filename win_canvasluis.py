@@ -99,3 +99,5 @@ def open_win_canvas(parent: tk.Tk):
             mostrar_graficas(frm, horas, temps)
 
     ttk.Button(frm, text="Cargar Datos Nocturnos", command=cargar).pack(pady=5)
+
+-  le puse un tema oscuro: fondo azul muy oscuro, la línea en cian con el área de abajo sombreada y las barras en amarillo, con una cuadrícula punteada para que no estorbe.
