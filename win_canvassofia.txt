@@ -121,3 +121,6 @@ if __name__ == "__main__":
         command=lambda: open_win_canvas(root),
     ).pack(pady=20)
     root.mainloop()
+
+
+-cambié la forma de las gráficas: convertí la línea en una gráfica de área con relleno verde y acosté las barras en horizontal, con una fila por hora.
