@@ -50,8 +50,8 @@ El sistema debe conectar a tenerías y maquilas de León para facilitar la publi
 2) ...
 3) ...
 
-En la versión 1 le puse un tema oscuro: fondo azul muy oscuro, la línea en cian con el área de abajo sombreada y las barras en amarillo, con una cuadrícula punteada para que no estorbe.
-En la versión 2 la dejé minimalista: quité los bordes de arriba y de la derecha, usé una línea gris delgada y solo resalté en rojo el último dato y la hora más caliente.
-En la versión 3 pinté todo según la temperatura, de azul cuando hace frío a rojo cuando hace calor, tanto en los puntos de la línea como en cada barra, y agregué una barra lateral que explica los colores.
-En la versión 4 cambié la forma de las gráficas: convertí la línea en una gráfica de área con relleno verde y acosté las barras en horizontal, con una fila por hora.
-En la versión 5 le agregué etiquetas a la información: marqué el máximo y el mínimo con flechas, dibujé una línea punteada con el promedio y escribí el valor arriba de cada barra.
+- En la **versión 1** le puse un tema oscuro: fondo azul muy oscuro, la línea en cian con el área de abajo sombreada y las barras en amarillo, con una cuadrícula punteada para que no estorbe.
+- En la **versión 2** la dejé minimalista: quité los bordes de arriba y de la derecha, usé una línea gris delgada y solo resalté en rojo el último dato y la hora más caliente.
+- En la **versión 3** pinté todo según la temperatura, de azul cuando hace frío a rojo cuando hace calor, tanto en los puntos de la línea como en cada barra, y agregué una barra lateral que explica los colores.
+- En la **versión 4** cambié la forma de las gráficas: convertí la línea en una gráfica de área con relleno verde y acosté las barras en horizontal, con una fila por hora.
+- En la **versión 5** le agregué etiquetas a la información: marqué el máximo y el mínimo con flechas, dibujé una línea punteada con el promedio y escribí el valor arriba de cada barra.
