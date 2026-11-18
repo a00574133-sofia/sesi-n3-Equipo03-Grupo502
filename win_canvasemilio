@@ -136,3 +136,6 @@ if __name__ == "__main__":
         command=lambda: open_win_canvas(root),
     ).pack(pady=20)
     root.mainloop()
+
+
+-  le agregué etiquetas a la información: marqué el máximo y el mínimo con flechas, dibujé una línea punteada con el promedio y escribí el valor arriba de cada barra.
